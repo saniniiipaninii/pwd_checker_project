@@ -1,1 +1,135 @@
-# pwd_checker_project
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNn0FAWpCTVpPbQfv322SuA",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/saniniiipaninii/pwd_checker_project/blob/main/README.md\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 106
+        },
+        "id": "h_ZEPmQUnlWW",
+        "outputId": "2c468fbe-840f-471f-94fe-925529c9a276"
+      },
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "SyntaxError",
+          "evalue": "invalid syntax (<ipython-input-3-402f274d7aef>, line 71)",
+          "traceback": [
+            "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-3-402f274d7aef>\"\u001b[0;36m, line \u001b[0;32m71\u001b[0m\n\u001b[0;31m    df = pd.DataFrame(passwords)y\u001b[0m\n\u001b[0m                                ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
+          ]
+        }
+      ],
+      "source": [
+        "import string\n",
+        "import getpass\n",
+        "import pandas as pd\n",
+        "\n",
+        "def check_pwd_strength(password):\n",
+        "    strength = 0\n",
+        "    remarks = ' '\n",
+        "    lower_count = upper_count = num_count = wspace_count = special_count = 0\n",
+        "\n",
+        "    for char in list(password):\n",
+        "        if char in string.ascii_lowercase:\n",
+        "            lower_count += 1\n",
+        "\n",
+        "        elif char in string.ascii_uppercase:\n",
+        "            upper_count +=1\n",
+        "        elif char in string.digits:\n",
+        "            num_count += 1\n",
+        "        elif char == ' ':\n",
+        "            wspace_count += 1\n",
+        "        else:\n",
+        "            special_count += 1\n",
+        "\n",
+        "    if lower_count >= 1:\n",
+        "        strength += 1\n",
+        "    if upper_count >= 1:\n",
+        "        strength += 1\n",
+        "    if num_count >= 1:\n",
+        "        strength += 1\n",
+        "    if wspace_count >= 1:\n",
+        "        strength += 1\n",
+        "    if special_count >= 1:\n",
+        "        strength += 1\n",
+        "\n",
+        "    if strength == 1:\n",
+        "        remarks = \"Very very very bad password! Please change this to a stronger password!\"\n",
+        "    elif strength == 2:\n",
+        "        remarks = \"Not a good password! Please change to a stronger password!\"\n",
+        "    elif strength == 3:\n",
+        "        remarks = \"Very weak password, please consider changing for better security.\"\n",
+        "    elif strength == 4:\n",
+        "        remarks = \"Not a bad password, but can definitely be better.\"\n",
+        "    elif strength == 5:\n",
+        "        remarks = \"A very strong password indeed!\"\n",
+        "    else:\n",
+        "      remarks = \"No strength score is applicable for this\"\n",
+        "\n",
+        "    return {\n",
+        "        \"Password\": password,\n",
+        "        \"Lowercase_Count\": lower_count,\n",
+        "        \"Uppercase_Count\": upper_count,\n",
+        "        \"Numerical_Count\": num_count,\n",
+        "        \"Whitespace_Count\": wspace_count,\n",
+        "        \"Special_Count\": special_count,\n",
+        "        \"Strength_Score\": strength,\n",
+        "        \"Remarks\": remarks,\n",
+        "    }\n",
+        "\n",
+        "def password_checker():\n",
+        "  print(\"+++ Welcome to the Password Checker +++\")\n",
+        "  passwords = []\n",
+        "  while True:\n",
+        "    password = getpass.getpass(\"Enter a password to check: \")\n",
+        "    results = check_pwd_strength(password)\n",
+        "    passwords.append(results)\n",
+        "\n",
+        "    another = input(\"Do you want to enter another password? (y/n): \")\n",
+        "    if another.lower() != 'y':\n",
+        "      break\n",
+        "\n",
+        "    # Convert the results to a DataFrame\n",
+        "    df = pd.DataFrame(passwords)\n",
+        "    print(\"\\nPassword Analysis Complete! Here is the summary:\\n\")\n",
+        "    print(df)\n",
+        "\n",
+        "    # Save the results to a CSV file\n",
+        "    df.to_csv(\"password_analysis_project.csv\", index=False)\n",
+        "    print(\"\\nResults saved to 'password_analysis_project.csv'!\")\n",
+        "\n",
+        "# Run the password checker\n",
+        "if __name__ == '__main__':\n",
+        "    password_checker()"
+      ]
+    }
+  ]
+}
